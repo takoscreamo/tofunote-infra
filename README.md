@@ -80,8 +80,20 @@ db_name     = "emotra"
 - DNS検証用CNAMEレコードをCloudflareに追加
 - ステータスが「発行済み」になるまで待つ
 
-### 4. Goバックエンドのビルド
+### 4. 一括デプロイ（推奨）
 
+`deploy.sh` を使うことで、GoバックエンドのビルドからLambda用zip作成、Terraformによるデプロイまで一括で自動実行できます。
+
+```bash
+./deploy.sh
+```
+
+- 途中で「デプロイを実行しますか？ (y/N):」と聞かれるので、`y` を入力してください。
+- 事前に `terraform.tfvars` などの設定ファイルが正しくセットされていることを確認してください。
+
+### 5. 手動デプロイ（参考）
+
+#### Goバックエンドのビルド
 ```bash
 # Goバックエンドリポジトリをクローン
 git clone https://github.com/takoscreamo/emotra-backend-go
@@ -95,8 +107,7 @@ zip lambda.zip bootstrap
 cp lambda.zip ../emotra-infra/
 ```
 
-### 5. Terraformデプロイ
-
+#### Terraformデプロイ
 ```bash
 cd ../emotra-infra
 terraform init
