@@ -121,6 +121,10 @@ deploy_infrastructure() {
         exit 0
     fi
     
+    # Lambda関数を強制的に再デプロイ
+    log_info "Lambda関数を強制的に再デプロイ（taint）します..."
+    terraform taint aws_lambda_function.emotra_backend
+    
     # デプロイ実行
     log_info "Terraformデプロイを実行中..."
     terraform apply -auto-approve
