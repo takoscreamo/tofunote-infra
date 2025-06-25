@@ -75,3 +75,9 @@ variable "db_name" {
   type        = string
   default     = "emotra"
 }
+
+variable "env" {
+  description = "Environment name (e.g. dev, prod)"
+  type        = string
+  default     = "prod"
+}
