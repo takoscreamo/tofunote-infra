@@ -76,6 +76,7 @@ resource "aws_lambda_function" "emotra_backend" {
       DB_USER     = var.db_user
       DB_PASSWORD = var.db_password
       DB_NAME     = var.db_name
+      ENV         = var.env
     }
   }
 
