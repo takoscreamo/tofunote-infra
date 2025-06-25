@@ -1,2 +1,18 @@
+# Cloudflare settings
 cloudflare_api_token = "your-api-token-here"
 cloudflare_zone_id   = "your-zone-id-here"
+
+# AWS settings
+aws_region = "ap-northeast-1"
+
+# Lambda settings
+lambda_function_name = "emotra-backend"
+lambda_timeout       = 30
+lambda_memory_size   = 512
+
+# Database settings (Neon)
+db_host     = "your-neon-host.neon.tech"
+db_port     = "5432"
+db_user     = "your-db-user"
+db_password = "your-db-password"
+db_name     = "emotra"

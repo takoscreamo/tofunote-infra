@@ -11,3 +11,10 @@ terraform.tfvars
 
 # Crash log
 crash.log
+
+# Lambda build files
+lambda.zip
+bootstrap
+
+# Backend repository
+emotra-backend-go/
