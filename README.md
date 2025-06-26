@@ -101,7 +101,7 @@ cd emotra-backend-go
 
 # Lambda用にビルド
 GOOS=linux GOARCH=amd64 go build -o bootstrap main.go
-zip lambda.zip bootstrap
+zip lambda.zip bootstrap openapi.yml
 
 # ビルドファイルをインフラリポジトリにコピー
 cp lambda.zip ../emotra-infra/

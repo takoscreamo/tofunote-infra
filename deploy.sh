@@ -83,7 +83,7 @@ build_backend() {
     
     # ZIPファイルの作成
     log_info "ZIPファイルを作成中..."
-    zip -r "$LAMBDA_ZIP" bootstrap
+    zip -r "$LAMBDA_ZIP" bootstrap openapi.yml
     
     # インフラディレクトリにコピー
     log_info "ビルドファイルをインフラディレクトリにコピー中..."
