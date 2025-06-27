@@ -1,7 +1,7 @@
 # Emotra Infrastructure (Terraform)
-- メンタルヘルスのための感情トラッキングアプリケーションのインフラ構成をTerraformで管理するリポジトリ
+> メンタルヘルス感情トラッキングアプリ「Emotra」のインフラ構成管理リポジトリをTerraformで管理するリポジトリ
 
-## 📦 構成
+## 📦 構成概要
 
 - **DNS管理**：Cloudflare
 - **フロントエンド**：Vercel（`emotra.takoscreamo.com`）
@@ -23,11 +23,11 @@
 
 ## ✅ 前提条件
 
-- Terraform v1.0 以上がインストールされていること
-- Cloudflare アカウントおよび API トークンを発行済みであること
-- AWS CLI がインストールされ、認証情報が設定されていること
-- `takoscreamo.com` ドメインが Cloudflare に登録されていること
-- Neon データベースが作成済みであること
+- Terraform v1.0 以上（推奨: v1.5 以上）
+- AWS CLI v2 以上
+- Cloudflare アカウント（APIトークン発行済み）
+- `takoscreamo.com` ドメインがCloudflareに登録済み
+- Neonでデータベース作成済み
 
 ## 🔐 変数の設定
 
@@ -35,8 +35,8 @@
 
 ```hcl
 # Cloudflare settings
-cloudflare_api_token = "your-real-api-token"
-cloudflare_zone_id   = "your-zone-id"
+cloudflare_api_token = "CloudflareのAPIトークン"
+cloudflare_zone_id   = "CloudflareのZone ID"
 
 # AWS settings
 aws_region = "ap-northeast-1"
@@ -47,10 +47,10 @@ lambda_timeout       = 30
 lambda_memory_size   = 512
 
 # Database settings (Neon)
-db_host     = "your-neon-host.neon.tech"
+db_host     = "xxx.neon.tech"
 db_port     = "5432"
-db_user     = "your-db-user"
-db_password = "your-db-password"
+db_user     = "ユーザー名"
+db_password = "パスワード"
 db_name     = "emotra"
 ```
 
@@ -95,7 +95,7 @@ db_name     = "emotra"
 
 #### Goバックエンドのビルド
 ```bash
-# Goバックエンドリポジトリをクローン
+# Goバックエンドリポジトリをクローン（`emotra-backend-go` ディレクトリが既にある場合は不要）
 git clone https://github.com/takoscreamo/emotra-backend-go
 cd emotra-backend-go
 
@@ -155,8 +155,8 @@ terraform apply
 ## 📄 `.gitignore` 設定例
 
 ```gitignore
-.terraform/
-.terraform.lock.hcl
-terraform.tfvars
-lambda.zip
+.terraform/           # Terraform作業ディレクトリ
+.terraform.lock.hcl   # プロバイダロックファイル
+terraform.tfvars      # 機密情報を含むため管理対象外
+lambda.zip            # Lambdaデプロイ用バイナリ
 ```
