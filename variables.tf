@@ -81,3 +81,26 @@ variable "env" {
   type        = string
   default     = "prod"
 }
+
+variable "cors_origin" {
+  description = "CORS allowed origins (comma-separated)"
+  type        = string
+  default     = "https://emotra.takoscreamo.com,http://localhost:3000"
+}
+
+variable "vercel_api_token" {
+  description = "Vercel API Token"
+  type        = string
+  sensitive   = true
+}
+
+variable "vercel_project_id" {
+  description = "Vercel Project ID"
+  type        = string
+}
+
+variable "vercel_team_id" {
+  description = "Vercel Team ID (optional)"
+  type        = string
+  default     = ""
+}
