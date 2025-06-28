@@ -112,15 +112,6 @@ deploy_infrastructure() {
     log_info "Terraformプランを確認中..."
     terraform plan
     
-    # ユーザー確認
-    echo
-    read -p "デプロイを実行しますか？ (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        log_warning "デプロイをキャンセルしました"
-        exit 0
-    fi
-    
     # Lambda関数を強制的に再デプロイ
     log_info "Lambda関数を強制的に再デプロイ（taint）します..."
     terraform taint aws_lambda_function.emotra_backend
