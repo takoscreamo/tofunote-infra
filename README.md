@@ -1,11 +1,11 @@
-# Emotra Infrastructure (Terraform)
-> メンタルヘルス感情トラッキングアプリ「Emotra」のインフラ構成管理リポジトリをTerraformで管理するリポジトリ
+# Feelog Infrastructure (Terraform)
+> メンタルヘルス感情トラッキングアプリ「Feelog」のインフラ構成管理リポジトリをTerraformで管理するリポジトリ
 
 ## 📦 構成概要
 
 - **DNS管理**：Cloudflare
-- **フロントエンド**：Vercel（`emotra.takoscreamo.com`）
-- **バックエンド**：AWS Lambda + API Gateway（`api.emotra.takoscreamo.com`）
+- **フロントエンド**：Vercel（`feelog.takoscreamo.com`）
+- **バックエンド**：AWS Lambda + API Gateway（`api.feelog.takoscreamo.com`）
 - **データベース**：Neon
 - **IaCツール**：Terraform
 
@@ -42,7 +42,7 @@ cloudflare_zone_id   = "CloudflareのZone ID"
 aws_region = "ap-northeast-1"
 
 # Lambda settings
-lambda_function_name = "emotra-backend"
+lambda_function_name = "feelog-backend"
 lambda_timeout       = 30
 lambda_memory_size   = 512
 
@@ -51,7 +51,7 @@ db_host     = "xxx.neon.tech"
 db_port     = "5432"
 db_user     = "ユーザー名"
 db_password = "パスワード"
-db_name     = "emotra"
+db_name     = "feelog"
 ```
 
 ※ `.gitignore` により Git に含まれない。
@@ -65,12 +65,12 @@ db_name     = "emotra"
 ### 2. CloudflareでDNS設定
 - takoscreamo.comのDNS管理画面で、以下のレコードを追加
     - **CAAレコード**
-        - 名前: `takoscreamo.com`、`api.emotra.takoscreamo.com`（両方）
+        - 名前: `takoscreamo.com`、`api.feelog.takoscreamo.com`（両方）
         - タグ: `issue`、値: `amazon.com`
         - フラグ: `0`
     - **CNAMEレコード**
-        - フロントエンド: `emotra` → `cname.vercel-dns.com`
-        - バックエンド: `api.emotra` → `API GatewayのCloudFrontドメイン名`（Terraformで自動作成）
+        - フロントエンド: `feelog` → `cname.vercel-dns.com`
+        - バックエンド: `api.feelog` → `API GatewayのCloudFrontドメイン名`（Terraformで自動作成）
     - **ACM検証用CNAMEレコード**
         - AWS ACMで証明書リクエスト時に表示されるCNAMEをそのまま追加
         - プロキシは必ず「DNSのみ（グレー雲）」
@@ -95,9 +95,9 @@ db_name     = "emotra"
 
 #### Goバックエンドのビルド
 ```bash
-# Goバックエンドリポジトリをクローン（`emotra-backend-go` ディレクトリが既にある場合は不要）
-git clone https://github.com/takoscreamo/emotra-backend-go
-cd emotra-backend-go
+# Goバックエンドリポジトリをクローン（`feelog-backend-go` ディレクトリが既にある場合は不要）
+git clone https://github.com/takoscreamo/feelog-backend-go
+cd feelog-backend-go
 
 # Lambda用にビルド
 GOOS=linux GOARCH=amd64 go build -o bootstrap main.go
@@ -116,7 +116,9 @@ terraform apply
 ```
 
 ### 6. 動作確認
-- `https://api.emotra.takoscreamo.com/ping` などでAPIが動作するか確認
+- `https://api.feelog.takoscreamo.com/ping` で `{"message": "pong"}` が返ることを確認
+- `https://api.feelog.takoscreamo.com/health` でサービスの状態がJSONで返ることを確認
+- `https://api.feelog.takoscreamo.com/status` も利用可能
 
 ---
 
@@ -124,13 +126,16 @@ terraform apply
 
 | サブドメイン                   | レコードタイプ | 向き先                         | 用途      |
 | ------------------------ | ------- | --------------------------- | ------- |
-| `emotra.takoscreamo.com` | CNAME   | `cname.vercel-dns.com`      | フロントエンド |
-| `api.emotra.takoscreamo.com` | CNAME   | `API Gateway CloudFrontドメイン` | バックエンド  |
+| `feelog.takoscreamo.com` | CNAME   | `cname.vercel-dns.com`      | フロントエンド |
+| `api.feelog.takoscreamo.com` | CNAME   | `API Gateway CloudFrontドメイン` | バックエンド  |
 
 ## ⚠️ 注意点・トラブルシューティング
 
+- **LambdaやAPI Gatewayのコード・ルーティングを変更したのに反映されない場合**
+    - API Gatewayのデプロイメントが古い可能性があります。`terraform taint aws_api_gateway_deployment.api` および `terraform taint aws_api_gateway_base_path_mapping.api` を実行し、`terraform apply` で再デプロイしてください。
+
 - **ACM証明書のDNS検証が失敗する場合**
-    - CAAレコードが正しく設定されているか（`takoscreamo.com`と`api.emotra.takoscreamo.com`両方に`amazon.com`を許可）
+    - CAAレコードが正しく設定されているか（`takoscreamo.com`と`api.feelog.takoscreamo.com`両方に`amazon.com`を許可）
     - CloudflareのCNAMEレコードは「DNSのみ（グレー雲）」であること
     - CNAMEレコードの「名前」「値」がAWSの指示と完全一致しているか
     - 反映まで最大1時間ほどかかる場合あり
@@ -140,13 +145,23 @@ terraform apply
     - コードを変更した場合は再ビルド＆zipして`terraform apply`でOK
 - **API Gatewayのカスタムドメインが作成できない場合**
     - 証明書が「発行済み」になっているか、us-east-1リージョンで発行されているか再確認
+- **ACM検証用CNAMEレコードの例**
+    - 名前: `_xxxxxxx.api.feelog.takoscreamo.com`
+    - 値: `_yyyyyyy.xxxxxxxx.acm-validations.aws`
+    - プロキシ: DNSのみ
 
 ## FAQ
+
+- **Q. /pingのレスポンスは？**
+  - A. `{"message": "pong"}` が返ります。
+
+- **Q. /healthや/statusのレスポンスは？**
+  - A. サービスの状態やバージョン情報などがJSONで返ります。
 
 - **Q. ACM証明書の検証用CNAMEはどこに追加する？**
   - A. CloudflareのDNS管理画面で「名前」「値」をそのまま追加。プロキシは「DNSのみ」。
 - **Q. CAAレコードはどこまで必要？**
-  - A. ルートドメイン（takoscreamo.com）とサブドメイン（api.emotra.takoscreamo.com）の両方に`amazon.com`を許可するCAAレコードを追加。
+  - A. ルートドメイン（takoscreamo.com）とサブドメイン（api.feelog.takoscreamo.com）の両方に`amazon.com`を許可するCAAレコードを追加。
 - **Q. API GatewayのCNAMEは何を指定する？**
   - A. API Gatewayカスタムドメイン作成後に発行されるCloudFrontドメイン名を指定。
 

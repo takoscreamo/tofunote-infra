@@ -2,12 +2,12 @@
 
 set -e
 
-echo "🚀 Emotra Backend Deployment Script"
+echo "🚀 Feelog Backend Deployment Script"
 echo "=================================="
 
 # 設定
-BACKEND_REPO="https://github.com/takoscreamo/emotra-backend-go"
-BACKEND_DIR="emotra-backend-go"
+BACKEND_REPO="https://github.com/takoscreamo/feelog-backend-go"
+BACKEND_DIR="feelog-backend-go"
 LAMBDA_ZIP="lambda.zip"
 
 # 色付きのログ関数
@@ -114,7 +114,7 @@ deploy_infrastructure() {
     
     # Lambda関数を強制的に再デプロイ
     log_info "Lambda関数を強制的に再デプロイ（taint）します..."
-    terraform taint aws_lambda_function.emotra_backend
+    terraform taint aws_lambda_function.feelog_backend
     
     # デプロイ実行
     log_info "Terraformデプロイを実行中..."

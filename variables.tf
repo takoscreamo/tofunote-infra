@@ -18,7 +18,7 @@ variable "aws_region" {
 variable "lambda_function_name" {
   description = "Name of the Lambda function"
   type        = string
-  default     = "emotra-backend"
+  default     = "feelog-backend"
 }
 
 variable "lambda_runtime" {
@@ -73,7 +73,7 @@ variable "db_password" {
 variable "db_name" {
   description = "Database name"
   type        = string
-  default     = "emotra"
+  default     = "feelog"
 }
 
 variable "env" {
@@ -85,7 +85,7 @@ variable "env" {
 variable "cors_origin" {
   description = "CORS allowed origins (comma-separated)"
   type        = string
-  default     = "https://emotra.takoscreamo.com,http://localhost:3000"
+  default     = "https://feelog.takoscreamo.com,http://localhost:3000"
 }
 
 variable "vercel_api_token" {
