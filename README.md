@@ -82,14 +82,11 @@ db_name     = "feelog"
 
 ### 4. 一括デプロイ（推奨）
 
-`deploy.sh` を使うことで、GoバックエンドのビルドからLambda用zip作成、Terraformによるデプロイまで一括で自動実行できます。
+`deploy.sh` を使うことで、GoバックエンドのビルドからLambda用zip作成、Terraformによるデプロイまで一括で自動実行する。
 
 ```bash
 ./deploy.sh
 ```
-
-- 途中で「デプロイを実行しますか？ (y/N):」と聞かれるので、`y` を入力してください。
-- 事前に `terraform.tfvars` などの設定ファイルが正しくセットされていることを確認してください。
 
 ### 5. 手動デプロイ（参考）
 
@@ -149,21 +146,6 @@ terraform apply
     - 名前: `_xxxxxxx.api.feelog.takoscreamo.com`
     - 値: `_yyyyyyy.xxxxxxxx.acm-validations.aws`
     - プロキシ: DNSのみ
-
-## FAQ
-
-- **Q. /pingのレスポンスは？**
-  - A. `{"message": "pong"}` が返ります。
-
-- **Q. /healthや/statusのレスポンスは？**
-  - A. サービスの状態やバージョン情報などがJSONで返ります。
-
-- **Q. ACM証明書の検証用CNAMEはどこに追加する？**
-  - A. CloudflareのDNS管理画面で「名前」「値」をそのまま追加。プロキシは「DNSのみ」。
-- **Q. CAAレコードはどこまで必要？**
-  - A. ルートドメイン（takoscreamo.com）とサブドメイン（api.feelog.takoscreamo.com）の両方に`amazon.com`を許可するCAAレコードを追加。
-- **Q. API GatewayのCNAMEは何を指定する？**
-  - A. API Gatewayカスタムドメイン作成後に発行されるCloudFrontドメイン名を指定。
 
 ---
 
