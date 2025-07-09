@@ -190,3 +190,19 @@ Lambdaで利用する環境変数（例: OPENROUTER_API_KEY, JWT_SECRET など�
 3. `main.tf` の `aws_lambda_function.feelog_backend` の `environment.variables` に追記
 
 これらを忘れると、Lambdaに正しく環境変数が渡らず、アプリが正常に動作しません。
+
+---
+
+## デプロイ・破棄の自動化運用について
+
+- **通常デプロイ（高速）**
+  - `./deploy.sh`
+  - Lambda関数の差分デプロイで高速化されます
+- **Lambda関数を強制的に再作成したい場合のみ**
+  - `./deploy.sh taint`
+  - Lambda関数を完全に再作成します
+- **インフラ全体の破棄（完全自動化）**
+  - `./destroy_with_cleanup.sh`
+  - API GatewayのBase Path Mapping削除も含めて完全自動化されています
+
+---

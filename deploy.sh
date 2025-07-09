@@ -112,10 +112,12 @@ deploy_infrastructure() {
     log_info "Terraformプランを確認中..."
     terraform plan
     
-    # Lambda関数を強制的に再デプロイ
-    log_info "Lambda関数を強制的に再デプロイ（taint）します..."
-    terraform taint aws_lambda_function.feelog_backend
-    
+    # Lambda関数を強制的に再デプロイ（taint）するか判定
+    if [ "$1" = "taint" ]; then
+        log_info "Lambda関数を強制的に再デプロイ（taint）します..."
+        terraform taint aws_lambda_function.feelog_backend
+    fi
+
     # デプロイ実行
     log_info "Terraformデプロイを実行中..."
     terraform apply -auto-approve
@@ -145,7 +147,7 @@ post_deploy_check() {
 main() {
     check_prerequisites
     build_backend
-    deploy_infrastructure
+    deploy_infrastructure "$1"
     post_deploy_check
 }
 

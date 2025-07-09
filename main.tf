@@ -156,7 +156,21 @@ resource "aws_api_gateway_deployment" "api" {
   ]
 
   rest_api_id = aws_api_gateway_rest_api.api.id
-  stage_name  = "prod"
+
+  # Lambdaのコードハッシュをトリガーにして、毎回新しいデプロイメントを作成
+  triggers = {
+    redeployment = aws_lambda_function.feelog_backend.source_code_hash
+  }
+}
+
+resource "aws_api_gateway_stage" "prod" {
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  deployment_id = aws_api_gateway_deployment.api.id
+  stage_name    = "prod"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # ACM Certificate (us-east-1)
@@ -179,7 +193,7 @@ resource "aws_api_gateway_domain_name" "api" {
 # API Gateway Base Path Mapping
 resource "aws_api_gateway_base_path_mapping" "api" {
   api_id      = aws_api_gateway_rest_api.api.id
-  stage_name  = aws_api_gateway_deployment.api.stage_name
+  stage_name  = aws_api_gateway_stage.prod.stage_name
   domain_name = aws_api_gateway_domain_name.api.domain_name
 }
 
