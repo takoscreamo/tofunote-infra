@@ -104,3 +104,15 @@ variable "vercel_team_id" {
   type        = string
   default     = ""
 }
+
+variable "openrouter_api_key" {
+  description = "OpenRouter API Key"
+  type        = string
+  sensitive   = true
+}
+
+variable "jwt_secret" {
+  description = "JWT Secret"
+  type        = string
+  sensitive   = true
+}

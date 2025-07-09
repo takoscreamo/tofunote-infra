@@ -27,3 +27,6 @@ cors_origin = "https://feelog.takoscreamo.com,http://localhost:3000"
 vercel_api_token = "your-vercel-api-token-here"
 vercel_project_id = "your-vercel-project-id-here"
 # vercel_team_id = "your-vercel-team-id-here"  # オプション
+
+openrouter_api_key = "your-openrouter-api-key"
+jwt_secret = "your-jwt-secret"

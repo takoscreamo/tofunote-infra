@@ -180,3 +180,13 @@ DB接続情報は `terraform output` から自動で取得されます。
 terraform.tfvars      # 機密情報を含むため管理対象外
 lambda.zip            # Lambdaデプロイ用バイナリ
 ```
+
+# ⚠️ 重要: Lambdaの環境変数を追加・変更する場合の注意
+
+Lambdaで利用する環境変数（例: OPENROUTER_API_KEY, JWT_SECRET など）を追加・変更した場合は、必ず下記3箇所をすべて修正してください。
+
+1. `variables.tf` に変数定義を追加
+2. `terraform.tfvars`（および `terraform.tfvars.example`）に値を追加
+3. `main.tf` の `aws_lambda_function.feelog_backend` の `environment.variables` に追記
+
+これらを忘れると、Lambdaに正しく環境変数が渡らず、アプリが正常に動作しません。

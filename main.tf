@@ -78,6 +78,8 @@ resource "aws_lambda_function" "feelog_backend" {
       DB_NAME     = var.db_name
       ENV         = var.env
       CORS_ORIGIN = var.cors_origin
+      OPENROUTER_API_KEY = var.openrouter_api_key
+      JWT_SECRET         = var.jwt_secret
     }
   }
 
