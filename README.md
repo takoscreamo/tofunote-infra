@@ -201,6 +201,8 @@ Lambdaで利用する環境変数（例: OPENROUTER_API_KEY, JWT_SECRET など�
 - **Lambda関数を強制的に再作成したい場合のみ**
   - `./deploy.sh taint`
   - Lambda関数を完全に再作成します
+  - 失敗する場合、以下でLambda関数を手動削除
+    - `aws lambda delete-function --function-name feelog-backend --region ap-northeast-1`
 - **インフラ全体の破棄（完全自動化）**
   - `./destroy_with_cleanup.sh`
   - API GatewayのBase Path Mapping削除も含めて完全自動化されています
