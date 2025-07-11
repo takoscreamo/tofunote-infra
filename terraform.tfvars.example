@@ -6,7 +6,7 @@ cloudflare_zone_id   = "your-zone-id-here"
 aws_region = "ap-northeast-1"
 
 # Lambda settings
-lambda_function_name = "feelog-backend"
+lambda_function_name = "tofunote-backend"
 lambda_timeout       = 30
 lambda_memory_size   = 512
 
@@ -15,13 +15,13 @@ db_host     = "your-neon-host.neon.tech"
 db_port     = "5432"
 db_user     = "your-db-user"
 db_password = "your-db-password"
-db_name     = "feelog"
+db_name     = "tofunote"
 
 # Environment
 env = "prod"
 
 # CORS settings
-cors_origin = "https://feelog.takoscreamo.com"
+cors_origin = "https://tofunote.takoscreamo.com"
 
 # Vercel settings
 vercel_api_token = "your-vercel-api-token-here"

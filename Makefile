@@ -1,5 +1,5 @@
 MIGRATE=migrate
-MIGRATIONS_DIR=feelog-backend-go/infra/migrations
+MIGRATIONS_DIR=tofunote-backend-go/infra/migrations
 
 DB_USER=$(shell terraform output -raw db_user)
 DB_PASSWORD=$(shell terraform output -raw db_password)

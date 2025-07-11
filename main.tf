@@ -1,6 +1,6 @@
 resource "cloudflare_record" "vercel_frontend" {
   zone_id = var.cloudflare_zone_id
-  name    = "feelog"
+  name    = "tofunote"
   type    = "CNAME"
   content = "cname.vercel-dns.com"
   proxied = false
@@ -8,7 +8,7 @@ resource "cloudflare_record" "vercel_frontend" {
 
 resource "cloudflare_record" "api_backend" {
   zone_id = var.cloudflare_zone_id
-  name    = "api.feelog"
+  name    = "api.tofunote"
   type    = "CNAME"
   content = aws_api_gateway_domain_name.api.cloudfront_domain_name
   proxied = false
@@ -60,7 +60,7 @@ resource "aws_iam_role_policy" "lambda_logs" {
 }
 
 # Lambda Function
-resource "aws_lambda_function" "feelog_backend" {
+resource "aws_lambda_function" "tofunote_backend" {
   filename         = "lambda.zip"
   function_name    = var.lambda_function_name
   role            = aws_iam_role.lambda_role.arn
@@ -125,7 +125,7 @@ resource "aws_api_gateway_integration" "lambda" {
 
   integration_http_method = "POST"
   type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.feelog_backend.invoke_arn
+  uri                    = aws_lambda_function.tofunote_backend.invoke_arn
 }
 
 # API Gateway Integration for root resource
@@ -136,14 +136,14 @@ resource "aws_api_gateway_integration" "lambda_root" {
 
   integration_http_method = "POST"
   type                   = "AWS_PROXY"
-  uri                    = aws_lambda_function.feelog_backend.invoke_arn
+  uri                    = aws_lambda_function.tofunote_backend.invoke_arn
 }
 
 # Lambda Permission for API Gateway
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.feelog_backend.function_name
+  function_name = aws_lambda_function.tofunote_backend.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*"
 }
@@ -159,7 +159,7 @@ resource "aws_api_gateway_deployment" "api" {
 
   # Lambdaのコードハッシュをトリガーにして、毎回新しいデプロイメントを作成
   triggers = {
-    redeployment = aws_lambda_function.feelog_backend.source_code_hash
+    redeployment = aws_lambda_function.tofunote_backend.source_code_hash
   }
 }
 
@@ -176,7 +176,7 @@ resource "aws_api_gateway_stage" "prod" {
 # ACM Certificate (us-east-1)
 resource "aws_acm_certificate" "api" {
   provider          = aws.us_east_1
-  domain_name       = "api.feelog.takoscreamo.com"
+  domain_name       = "api.tofunote.takoscreamo.com"
   validation_method = "DNS"
 
   lifecycle {
@@ -186,7 +186,7 @@ resource "aws_acm_certificate" "api" {
 
 # API Gateway Domain Name
 resource "aws_api_gateway_domain_name" "api" {
-  domain_name     = "api.feelog.takoscreamo.com"
+  domain_name     = "api.tofunote.takoscreamo.com"
   certificate_arn = aws_acm_certificate.api.arn
 }
 
@@ -200,7 +200,7 @@ resource "aws_api_gateway_base_path_mapping" "api" {
 # Outputs
 output "lambda_function_arn" {
   description = "ARN of the Lambda function"
-  value       = aws_lambda_function.feelog_backend.arn
+  value       = aws_lambda_function.tofunote_backend.arn
 }
 
 output "api_gateway_url" {
@@ -218,7 +218,7 @@ resource "vercel_project_environment_variable" "api_base_url_production" {
   project_id = var.vercel_project_id
   team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
   key        = "NEXT_PUBLIC_BACKEND_URL"
-  value      = "https://api.feelog.takoscreamo.com"
+  value      = "https://api.tofunote.takoscreamo.com"
   target     = ["production"]
 }
 
@@ -226,7 +226,7 @@ resource "vercel_project_environment_variable" "api_base_url_preview" {
   project_id = var.vercel_project_id
   team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
   key        = "NEXT_PUBLIC_BACKEND_URL"
-  value      = "https://api.feelog.takoscreamo.com"
+  value      = "https://api.tofunote.takoscreamo.com"
   target     = ["preview"]
 }
 

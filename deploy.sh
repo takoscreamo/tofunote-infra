@@ -2,12 +2,12 @@
 
 set -e
 
-echo "🚀 Feelog Backend Deployment Script"
+echo "🚀 Tofunote Backend Deployment Script"
 echo "=================================="
 
 # 設定
-BACKEND_REPO="https://github.com/takoscreamo/feelog-backend-go"
-BACKEND_DIR="feelog-backend-go"
+BACKEND_REPO="https://github.com/takoscreamo/tofunote-backend-go"
+BACKEND_DIR="tofunote-backend-go"
 LAMBDA_ZIP="lambda.zip"
 
 # 色付きのログ関数
@@ -115,7 +115,7 @@ deploy_infrastructure() {
     # Lambda関数を強制的に再デプロイ（taint）するか判定
     if [ "$1" = "taint" ]; then
         log_info "Lambda関数を強制的に再デプロイ（taint）します..."
-        terraform taint aws_lambda_function.feelog_backend
+        terraform taint aws_lambda_function.tofunote_backend
     fi
 
     # デプロイ実行

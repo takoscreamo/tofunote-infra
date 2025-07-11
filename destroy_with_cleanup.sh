@@ -2,7 +2,7 @@
 set -e
 
 # 必要に応じて値を修正してください
-DOMAIN="api.feelog.takoscreamo.com"
+DOMAIN="api.tofunote.takoscreamo.com"
 REGION="ap-northeast-1"
 
 # Base Path Mapping削除
