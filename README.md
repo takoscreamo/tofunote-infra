@@ -13,6 +13,11 @@
 
 ---
 
+# 構成図
+<img width="1016" height="392" alt="Image" src="https://github.com/user-attachments/assets/4625d3ea-3a1c-4708-a60f-2b7cab05959e" />
+
+---
+
 ## このリポジトリの目的
 
 - **IaC（Infrastructure as Code）による自動化・再現性の担保**

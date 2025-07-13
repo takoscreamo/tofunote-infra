@@ -18,3 +18,7 @@ bootstrap
 
 # Backend repository
 tofunote-backend-go/
+
+# インフラ構成図
+構成図.drawio
+.$構成図.drawio.bkp
